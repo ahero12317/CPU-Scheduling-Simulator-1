@@ -12,7 +12,7 @@ public class Process implements IProcess {
 	int mQuantum;  		//for AG scheduling.
 	
 	///Constructor.
-	Process(){}
+	public Process(){}
 	Process(String name, int arrival, int burst, String colour, int quantum, int priority ){	
 		this.mName = name;
 		this.mArrivalTime = arrival;
