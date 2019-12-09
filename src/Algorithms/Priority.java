@@ -1,8 +1,8 @@
 package Algorithms;
+import Processes.Process;
+import java.util.*;
 
 public class Priority extends Algorithm {
-<<<<<<< Updated upstream
-=======
 	int n;
 	String name;
 	int Atime;
@@ -30,12 +30,26 @@ class Mycomparator implements Comparator<Object>
 	
 }
 
->>>>>>> Stashed changes
 	@Override
 	public void Simulate() {
+		TreeSet<Process> queue=new TreeSet<Process>(new Mycomparator());
+		System.out.println("enter no. of processes");
+		n=sc.nextInt();
+		for(int i=0;i<n;i++)
+		{
+			Process p=new Process();
+			System.out.println("enter process name, arrival time, burst time, prio");
+			name=sc1.nextLine();
+			Atime=sc.nextInt();
+			Btime=sc.nextInt();
+			prio=sc.nextInt();
+			p.setmName(name);
+			p.setmArrivalTime(Atime);
+			p.setmBurstTime(Btime);
+			p.setmPriority(prio);
+			queue.add(p);	
+		}
 		
-<<<<<<< Updated upstream
-=======
 		ArrayList<Process> result=new ArrayList<Process>();
 		Iterator<Process> it = queue.iterator();
 		Initial_time = ((Process)queue.first()).getmArrivalTime();
@@ -61,10 +75,9 @@ class Mycomparator implements Comparator<Object>
 			sumTAT=sumTAT+result.get(i).getmTurnAroundTime();
 			System.out.print("\n   "+result.get(i).getmName()+"\t\t   "+result.get(i).getmBurstTime()+"\t\t     "+result.get(i).getmWaitingTime()+"\t\t     "+result.get(i).getmTurnAroundTime()+"\t\t     "+result.get(i).getmPriority()+"\n");
 		}
-	avgWT=sumWT/n;
-	avgTAT=sumTAT/n;
-	System.out.print("average waiting time: " + avgWT + "\n");
-	System.out.print("average turn around time: " + avgTAT + "\n");
->>>>>>> Stashed changes
+		avgWT=sumWT/n;
+		avgTAT=sumTAT/n;
+		System.out.print("average waiting time: " + avgWT + "\n");
+		System.out.print("average turn around time: " + avgTAT + "\n");
 	}
 }
