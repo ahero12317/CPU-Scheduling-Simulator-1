@@ -16,6 +16,9 @@ public interface IProcess {
 	public int getmTurnAroundTime();
 	public void setmTurnAroundTime(int mTurnAroundTime);
 	
+	public int getmCompletionTime();
+	public void setmCompletionTime(int mCompletionTime);
+	
 	public int getmRemainingTime();
 	public void setmRemainingTime(int mRemainingTime);
 	

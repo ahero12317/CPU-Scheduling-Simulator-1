@@ -6,13 +6,14 @@ public class Process implements IProcess {
 	int mBurstTime;
 	int mWaitingTime;
 	int mTurnAroundTime;
+	int mCompletionTime;
 	int mRemainingTime; //for SJF and AG scheduling.
 	String mColour; 	//for GUI. 
 	int mPriority; 		//for priority and AG scheduling.
 	int mQuantum;  		//for AG scheduling.
 	
 	///Constructor.
-	Process(){}
+	public Process(){}
 	Process(String name, int arrival, int burst, String colour, int quantum, int priority ){	
 		this.mName = name;
 		this.mArrivalTime = arrival;
@@ -40,6 +41,9 @@ public class Process implements IProcess {
 	
 	public int getmTurnAroundTime() {return mTurnAroundTime;}
 	public void setmTurnAroundTime(int mTurnAroundTime) {this.mTurnAroundTime = mTurnAroundTime;}
+	
+	public int getmCompletionTime() {return mCompletionTime;}
+	public void setmCompletionTime(int mCompletionTime) {this.mCompletionTime = mCompletionTime;}
 	
 	public int getmRemainingTime() {return mRemainingTime;}
 	public void setmRemainingTime(int mRemainingTime) {this.mRemainingTime = mRemainingTime;}
