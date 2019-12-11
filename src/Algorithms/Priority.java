@@ -60,6 +60,9 @@ class Mycomparator implements Comparator<Object>
 			Completed_time=Initial_time;
 			p1.setmTurnAroundTime(Completed_time-p1.getmArrivalTime());
 			p1.setmWaitingTime(p1.getmTurnAroundTime()-p1.getmBurstTime());
+			if(p1.getmWaitingTime()>=10){
+				p1.setmPriority(p1.getmPriority()-1);
+			}
 			result.add(p1);
 			
 		}
