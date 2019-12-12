@@ -74,8 +74,23 @@ public class AG extends Algorithm {
 		System.out.print(")		");
 	}
 	
+	public void sortProcesses(int time) {
+		this.mTemp.sort((o1, o2) -> {
+			if (o1.getmArrivalTime() <= time && o2.getmArrivalTime() <= time) {
+				if (o1.getmAGFactor() < o2.getmAGFactor())
+					return -1;
+				else
+					return 1;
+			} else if (o1.getmArrivalTime() < o2.getmArrivalTime())
+				return -1;
+			else
+				return 1;
+		});
+	}
+	
 	@Override
 	public void Simulate() {
+		
 		
 	}
 }
