@@ -8,7 +8,6 @@ import Processes.Process;
 
 public class SRTF extends Algorithm {
 	String PName;
-	String temp;
 	int noOfProcesses;
 	int arrivalTime;
 	int burstTime;
@@ -16,7 +15,8 @@ public class SRTF extends Algorithm {
 	int compTime;
 	int turnATime;
 	int waitTime;
-	int min, i=0, total = 0, t = 0, c;
+	int overheadTime = 0;
+	int min, i = 0, total = 0, t = 0, c;
 	float avgwt = 0, avgta = 0;
 	ArrayList<Process> list = new ArrayList<Process>();
 	ArrayList<Process> last = new ArrayList<Process>();
@@ -29,7 +29,7 @@ public class SRTF extends Algorithm {
 		noOfProcesses = sc.nextInt();
 		for (int i = 0; i < noOfProcesses; i++) {
 			Process P = new Process();
-			System.out.println("Enter process name,  arrival time, burst time::");
+			System.out.println("Enter process name,  arrival time, burst time:");
 			PName = nameSc.nextLine();
 			arrivalTime = sc.nextInt();
 			burstTime = sc.nextInt();
@@ -39,6 +39,7 @@ public class SRTF extends Algorithm {
 			P.setmRemainingTime(burstTime);
 			P.setmName(PName);
 			P.setmWaitingTime(waitTime);
+			P.setmCompletionTime(0);
 
 			list.add(P);
 		}
@@ -47,16 +48,15 @@ public class SRTF extends Algorithm {
 			min = 100;
 			c = noOfProcesses;
 			if (total == noOfProcesses) {
-				last.get(i-1).setmWaitingTime(last.get(i-1).getmWaitingTime() + 1);
-				System.out.println("saving data of " + last.get(i-1).getmName());
+				System.out.println("Saving data of " + last.get(i - 1).getmName() + " in PCB");
 				break;
 			}
 			// Find process with minimum burst time
 			for (int j = 0; j < list.size(); j++) {
 				if ((list.get(j).getmArrivalTime() <= t) && (list.get(j).getmRemainingTime() > 0)
-						&& (list.get(j).getmBurstTime() < min)) {
-					min = list.get(j).getmBurstTime();		
-					last.add(i, list.get(j)); 
+						&& (list.get(j).getmRemainingTime() < min)) {
+					min = list.get(j).getmRemainingTime();
+					last.add(i, list.get(j));
 					c = j;
 				}
 			}
@@ -65,33 +65,30 @@ public class SRTF extends Algorithm {
 			if (c == noOfProcesses) {
 				t++;
 			} else {
-				if(i == 0) {
+				if (i == 0) {
 					list.get(c).setmRemainingTime((list.get(c).getmRemainingTime() - 1));
-					System.out.println("loading data of " + list.get(c).getmName());
-					list.get(c).setmWaitingTime(list.get(c).getmWaitingTime() + 1);          //assuming the context switching overhead time = 1
+					System.out.println("Loading data of " + list.get(c).getmName() + " from PCB");
+					list.get(c).setmCompletionTime(list.get(c).getmCompletionTime() + 1);
 					System.out.println(list.get(c).getmName() + " is executing");
 					t++;
 					i++;
-				}
-				else if((last.get(i-1).getmName().equals(list.get(c).getmName())) ) {
+				} else if ((last.get(i - 1).getmName().equals(list.get(c).getmName()))) {
 					list.get(c).setmRemainingTime((list.get(c).getmRemainingTime() - 1));
 					t++;
 					i++;
-					
-				}
-				else {
-					list.get(c).setmRemainingTime((list.get(c).getmRemainingTime() - 1));   
-					last.get(i-1).setmWaitingTime(last.get(i-1).getmWaitingTime() + 1);
-					list.get(c).setmWaitingTime(list.get(c).getmWaitingTime() + 1);
-					System.out.println("saving data of " + last.get(i-1).getmName());
-					System.out.println("loading data of " + list.get(c).getmName());
+
+				} else {
+					list.get(c).setmRemainingTime((list.get(c).getmRemainingTime() - 1));
+					overheadTime += 2;
+					System.out.println("Saving data of " + last.get(i - 1).getmName() + " in PCB");
+					System.out.println("Loading data of " + list.get(c).getmName() + " from PCB");
 					System.out.println(list.get(c).getmName() + " is executing");
 					t++;
 					i++;
 				}
 
 				if (list.get(c).getmRemainingTime() == 0) {
-					list.get(c).setmCompletionTime(t);
+					list.get(c).setmCompletionTime(list.get(c).getmCompletionTime() + t + overheadTime);
 					total++;
 				}
 			}
@@ -101,7 +98,7 @@ public class SRTF extends Algorithm {
 		for (int y = 0; y < list.size(); y++) {
 			int x = list.get(y).getmWaitingTime();
 			list.get(y).setmTurnAroundTime(list.get(y).getmCompletionTime() - list.get(y).getmArrivalTime());
-			list.get(y).setmWaitingTime(x +=(list.get(y).getmTurnAroundTime() - list.get(y).getmBurstTime()));
+			list.get(y).setmWaitingTime(x += (list.get(y).getmTurnAroundTime() - list.get(y).getmBurstTime()));
 			avgwt += list.get(y).getmWaitingTime();
 			avgta += list.get(y).getmTurnAroundTime();
 		}
@@ -114,7 +111,8 @@ public class SRTF extends Algorithm {
 					+ list.get(y).getmTurnAroundTime() + "           " + list.get(y).getmWaitingTime());
 		}
 
-		System.out.println("average wait time = " + avgwt/noOfProcesses + "  average turn around time = " + avgta/noOfProcesses );
+		System.out.println("average wait time = " + avgwt / noOfProcesses + "  average turn around time = "
+				+ avgta / noOfProcesses);
 	}
 
 }
