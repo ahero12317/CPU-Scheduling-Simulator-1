@@ -63,6 +63,17 @@ public class AG extends Algorithm {
 		}
 	}
 	
+	public void printUpdates(int time) {
+		System.out.print("[Time: " + time + "] -> ");
+		System.out.print("Quantum ( ");
+		for (int i = 0; i < this.mProcesses.size(); i++)
+			System.out.print(this.mProcesses.get(i).getmQuantum() + " ");
+		System.out.print(") -> ceil(50%) = ( ");
+		for (int i = 0; i < this.mProcesses.size(); i++)
+			System.out.print((int) Math.ceil((this.mProcesses.get(i).getmQuantum()) * 0.5) + " ");
+		System.out.print(")		");
+	}
+	
 	@Override
 	public void Simulate() {
 		
