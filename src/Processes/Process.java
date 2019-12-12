@@ -11,10 +11,11 @@ public class Process implements IProcess {
 	String mColour; 	//for GUI. 
 	int mPriority; 		//for priority and AG scheduling.
 	int mQuantum;  		//for AG scheduling.
-	
+	int mAGFactor;		//for AG scheduling.
+
 	///Constructor.
 	public Process(){}
-	Process(String name, int arrival, int burst, String colour, int quantum, int priority ){	
+	public Process(String name, int arrival, int burst, String colour, int quantum, int priority ){	
 		this.mName = name;
 		this.mArrivalTime = arrival;
 		this.mBurstTime = burst;
@@ -24,6 +25,7 @@ public class Process implements IProcess {
 		this.mWaitingTime = -1;
 		this.mRemainingTime = -1;
 		this.mTurnAroundTime = -1;	
+		this.mAGFactor = -1;
 	}
 	
 	//Mutators and accessors.
@@ -57,5 +59,6 @@ public class Process implements IProcess {
 	public int getmQuantum() {return mQuantum;}
 	public void setmQuantum(int mQuantum) {this.mQuantum = mQuantum;}
 	
-	
+	public int getmAGFactor() {return mAGFactor;}
+	public void setmAGFactor(int mAGFactor) {this.mAGFactor = mAGFactor;}
 }
