@@ -333,16 +333,6 @@ public class AG extends Algorithm {
 
 			} else if (this.mTemp.size() == 1 && this.readyQueue.size() == 0) {
 				System.out.println("Process " + this.mTemp.get(0).getmName() + " running.");
-				time += this.mTemp.get(0).getmQuantum();
-
-				this.mTemp.get(0).setmWaitingTime(time - this.mTemp.get(0).getmArrivalTime()
-						+ this.mTemp.get(0).getmRemainingTime() - this.mTemp.get(0).getmBurstTime());
-				this.mTemp.get(0).setmRemainingTime(this.mTemp.get(0).getmRemainingTime() - Math
-						.min((int) Math.ceil(this.mTemp.get(0).getmQuantum()), this.mTemp.get(0).getmRemainingTime()));
-				int mean = ((int) Math.ceil((this.mTotalQuantum / this.mNumOfProcesses) * 0.1));
-				this.mTemp.get(0).setmQuantum(this.mTemp.get(0).getmQuantum() + mean);
-				this.mTotalQuantum += mean;
-
 				if (this.mTemp.get(0).getmRemainingTime() == 0) {
 					this.mTemp.get(0).setmTurnAroundTime(time - this.mTemp.get(0).getmArrivalTime());
 					mTotalQuantum -= this.mTemp.get(0).getmQuantum();
@@ -355,7 +345,22 @@ public class AG extends Algorithm {
 						}
 					}
 				}
-
+				else {
+					time += this.mTemp.get(0).getmQuantum();
+	
+					this.mTemp.get(0).setmWaitingTime(time - this.mTemp.get(0).getmArrivalTime()
+							+ this.mTemp.get(0).getmRemainingTime() - this.mTemp.get(0).getmBurstTime());
+					this.mTemp.get(0).setmRemainingTime(this.mTemp.get(0).getmRemainingTime() - Math
+							.min((int) Math.ceil(this.mTemp.get(0).getmQuantum()), this.mTemp.get(0).getmRemainingTime()));
+					int mean = ((int) Math.ceil((this.mTotalQuantum / this.mNumOfProcesses) * 0.1));
+					this.mTemp.get(0).setmQuantum(this.mTemp.get(0).getmQuantum() + mean);
+					this.mTotalQuantum += mean;
+	
+					if (lastProcess != this.mTemp.get(0).getmAGFactor()) {
+						this.mOutput.add(this.mTemp.get(0));
+						lastProcess = this.mTemp.get(0).getmAGFactor();
+					}
+				}
 			} else {
 				time++;
 				System.out.print("\n");
