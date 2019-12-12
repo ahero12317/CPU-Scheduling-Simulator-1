@@ -104,6 +104,13 @@ public class AG extends Algorithm {
 		}
 	}
 
+	public void printExecutionOrder() {
+		System.out.println("\n[Processes execution order]");
+		for (int i = 0; i < this.mOutput.size(); i++)
+			System.out.print(this.mOutput.get(i).getmName() + "	");
+		System.out.print("\n\n");
+	}
+
 	@Override
 	public void Simulate() {
 		boolean queue = false;
@@ -344,18 +351,17 @@ public class AG extends Algorithm {
 							break;
 						}
 					}
-				}
-				else {
+				} else {
 					time += this.mTemp.get(0).getmQuantum();
-	
+
 					this.mTemp.get(0).setmWaitingTime(time - this.mTemp.get(0).getmArrivalTime()
 							+ this.mTemp.get(0).getmRemainingTime() - this.mTemp.get(0).getmBurstTime());
-					this.mTemp.get(0).setmRemainingTime(this.mTemp.get(0).getmRemainingTime() - Math
-							.min((int) Math.ceil(this.mTemp.get(0).getmQuantum()), this.mTemp.get(0).getmRemainingTime()));
+					this.mTemp.get(0).setmRemainingTime(this.mTemp.get(0).getmRemainingTime() - Math.min(
+							(int) Math.ceil(this.mTemp.get(0).getmQuantum()), this.mTemp.get(0).getmRemainingTime()));
 					int mean = ((int) Math.ceil((this.mTotalQuantum / this.mNumOfProcesses) * 0.1));
 					this.mTemp.get(0).setmQuantum(this.mTemp.get(0).getmQuantum() + mean);
 					this.mTotalQuantum += mean;
-	
+
 					if (lastProcess != this.mTemp.get(0).getmAGFactor()) {
 						this.mOutput.add(this.mTemp.get(0));
 						lastProcess = this.mTemp.get(0).getmAGFactor();
@@ -366,5 +372,6 @@ public class AG extends Algorithm {
 				System.out.print("\n");
 			}
 		}
+		printExecutionOrder();
 	}
 }
