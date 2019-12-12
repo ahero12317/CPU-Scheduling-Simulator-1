@@ -17,6 +17,8 @@ public class AG extends Algorithm {
 	Queue<Process> readyQueue;
 	int mMaxTime;
 	int mTotalQuantum;
+	int mTotalTurnAround;
+	int mTotalWaitingTime;
 
 	public AG() {
 		this.mInput = new Scanner(System.in);
@@ -28,6 +30,8 @@ public class AG extends Algorithm {
 		this.readyQueue = new LinkedList<>();
 		this.mMaxTime = 0;
 		this.mTotalQuantum = 0;
+		this.mTotalTurnAround = 0;
+		this.mTotalWaitingTime = 0;
 
 		getInput();
 	}
@@ -115,9 +119,27 @@ public class AG extends Algorithm {
 		for (int i = 0; i < this.mProcesses.size(); i++) {
 			this.mProcesses.get(i).setmTurnAroundTime(this.mProcesses.get(i).getmCompletionTime() - this.mProcesses.get(i).getmArrivalTime());
 			this.mProcesses.get(i).setmWaitingTime(this.mProcesses.get(i).getmTurnAroundTime() - this.mProcesses.get(i).getmBurstTime());		
+			this.mTotalTurnAround += this.mProcesses.get(i).getmTurnAroundTime();
+			this.mTotalWaitingTime += this.mProcesses.get(i).getmWaitingTime();
 		}
 	}
 	
+	public void printTable() {
+		timeCalculations();
+		System.out.println("\n\nProcess \t Arrival Time \t Burst Time \t Priority \t Waiting Time \t Turn Around Time \t AG-Factor \n");
+		for (int i = 0; i < this.mProcesses.size(); i++) {
+			System.out.print("\n   " + this.mProcesses.get(i).getmName() + "\t\t   "
+					+ this.mProcesses.get(i).getmArrivalTime() + "\t	    " + this.mProcesses.get(i).getmBurstTime()
+					+ "\t           " + this.mProcesses.get(i).getmPriority() + "\t\t    "
+					+ this.mProcesses.get(i).getmWaitingTime() + "\t\t      " + this.mProcesses.get(i).getmTurnAroundTime()
+					+ "\t\t    " + this.mProcesses.get(i).getmAGFactor() + "\n");
+		}
+		System.out.print("\n\n");
+		System.out.println("[Some Statistics]");
+		System.out.println("* Average turn around time = " +this.mTotalTurnAround/this.mNumOfProcesses+ ".");
+		System.out.println("* Average waiting time = " +this.mTotalWaitingTime/this.mNumOfProcesses+ ".");
+		System.out.print("\n\n");
+	}
 
 	@Override
 	public void Simulate() {
@@ -375,5 +397,6 @@ public class AG extends Algorithm {
 		}
 
 		printExecutionOrder();
+		printTable();
 	}
 }
