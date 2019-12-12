@@ -16,10 +16,10 @@ Simulating some algorithms for CPU scheduling.
   
   
 [We have 3 scenarios of the running process]
-* The running process used all its quantum time and it still have job to do 
+* The running process used all its quantum time and it still have job to do.
    In this case, add this process to the end of the queue, then increases its Quantum time by (ceil(10% of the (mean of Quantum)))).
 * The running process didn’t use all its quantum time based on another process converted from ready to running.
    In this case, add this process to the end of the queue, and then increase its Quantum time by the remaining unused Quantum 
    time of this process.
-* The running process finished its job 
+* The running process finished its job. 
    In this case, set its quantum time to zero and remove it from ready queue and add it to the die list.
