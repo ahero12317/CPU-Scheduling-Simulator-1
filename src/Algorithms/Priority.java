@@ -100,10 +100,10 @@ public void startSimulation() {
 			
 		}
 		
-		int sumWT=0;
-		int sumTAT=0;
-		int avgWT=0;
-		int avgTAT=0;
+		float sumWT=0;
+		float sumTAT=0;
+		float avgWT=0;
+		float avgTAT=0;
 		System.out.println("\n\nProcess \t Burst Time \t Wait Time \t Turn Around Time   Priority \n");
 		for(int i=0;i<result.size();i++)
 		{
