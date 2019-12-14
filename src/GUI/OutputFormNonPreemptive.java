@@ -57,7 +57,7 @@ public class OutputFormNonPreemptive extends JFrame {
 			Task t1 = new Task(" ", new SimpleTimePeriod(this.mTimeline.get(2*i), this.mTimeline.get(2*i+1)));
 			ArrayList<Task> temp = new ArrayList<>();
 			temp.clear();
-			for (int j = 0; j < this.mOrder.size() - 1; j++) {
+			for (int j = 0; j < this.mOrder.size() ; j++) {
 				if (mOrder.get(j).getmName().equals("p" + String.valueOf(i + 1))) {
 					temp.add(new Task(" ",
 							new SimpleTimePeriod(this.mTimeline.get(2 * j), this.mTimeline.get(2 * j + 1))));
