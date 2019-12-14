@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+import GUI.OutputForm;
 import Processes.Process;
 
 public class AG extends Algorithm {
@@ -14,16 +18,19 @@ public class AG extends Algorithm {
 	ArrayList<Process> mTemp;
 	ArrayList<Process> mOutput;
 	ArrayList<Process> mDeadList;
+	ArrayList<Integer> mTimeLine;
 	Queue<Process> readyQueue;
 	int mMaxTime;
 	int mTotalQuantum;
 	int mTotalTurnAround;
 	int mTotalWaitingTime;
+	
 
 	public AG() {
 		this.mInput = new Scanner(System.in);
-		this.mNumOfProcesses = 0;
+		this.mNumOfProcesses = 0; 
 		this.mProcesses = new ArrayList<>();
+		this.mTimeLine = new ArrayList<>();
 		this.mTemp = new ArrayList<>();
 		this.mOutput = new ArrayList<>();
 		this.mDeadList = new ArrayList<>();
@@ -32,6 +39,7 @@ public class AG extends Algorithm {
 		this.mTotalQuantum = 0;
 		this.mTotalTurnAround = 0;
 		this.mTotalWaitingTime = 0;
+		
 
 		getInput();
 	}
@@ -140,12 +148,26 @@ public class AG extends Algorithm {
 		System.out.println("* Average waiting time = " +this.mTotalWaitingTime/this.mNumOfProcesses+ ".");
 		System.out.print("\n\n");
 	}
+	
+	public void startSimulation() {
+		SwingUtilities.invokeLater(() -> {
+			OutputForm example = new OutputForm(this.mProcesses, this.mOutput, this.mTimeLine);
+			example.setSize(800, 400);
+			example.setLocationRelativeTo(null);
+			example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			example.setVisible(true);
+		});
+	}
 
 	@Override
 	public void Simulate() {
 		boolean queue = false;
+		boolean included = false;
 		int lastProcess = 0; /// Store the last process info to prevent duplication
 		for (int time = 0; time <= this.mMaxTime;) {
+			if(included)
+				this.mTimeLine.add(time);
+			included = true;
 			/// Sorting the remaining processes according to their AG-Factor.
 			int _time = time;
 			sortProcesses(_time);
@@ -176,6 +198,7 @@ public class AG extends Algorithm {
 				if (lastProcess != tempProcess.getmAGFactor()) {
 					this.mOutput.add(tempProcess);
 					lastProcess = tempProcess.getmAGFactor();
+					this.mTimeLine.add(time);
 				}
 
 				/// Updating the waiting time and the remaining time of the current process,
@@ -281,6 +304,7 @@ public class AG extends Algorithm {
 				if (lastProcess != tempProcess.getmAGFactor()) {
 					this.mOutput.add(tempProcess);
 					lastProcess = tempProcess.getmAGFactor();
+					this.mTimeLine.add(time);
 				}
 
 				time += Math.min(tempProcess.getmRemainingTime(), (int) Math.ceil(tempProcess.getmQuantum() * 0.5));
@@ -375,6 +399,7 @@ public class AG extends Algorithm {
 				if (lastProcess != this.mTemp.get(0).getmAGFactor()) {
 					this.mOutput.add(this.mTemp.get(0));
 					lastProcess = this.mTemp.get(0).getmAGFactor();
+					this.mTimeLine.add(time);
 				}
 
 				if (this.mTemp.get(0).getmRemainingTime() == 0) {
@@ -392,11 +417,13 @@ public class AG extends Algorithm {
 
 			} else {
 				time++;
+				included = false;
 				System.out.print("\n");
 			}
 		}
 
 		printExecutionOrder();
 		printTable();
+		startSimulation();
 	}
 }
