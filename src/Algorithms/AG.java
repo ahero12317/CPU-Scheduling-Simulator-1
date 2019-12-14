@@ -24,11 +24,10 @@ public class AG extends Algorithm {
 	int mTotalQuantum;
 	int mTotalTurnAround;
 	int mTotalWaitingTime;
-	
 
 	public AG() {
 		this.mInput = new Scanner(System.in);
-		this.mNumOfProcesses = 0; 
+		this.mNumOfProcesses = 0;
 		this.mProcesses = new ArrayList<>();
 		this.mTimeLine = new ArrayList<>();
 		this.mTemp = new ArrayList<>();
@@ -39,7 +38,6 @@ public class AG extends Algorithm {
 		this.mTotalQuantum = 0;
 		this.mTotalTurnAround = 0;
 		this.mTotalWaitingTime = 0;
-		
 
 		getInput();
 	}
@@ -122,34 +120,41 @@ public class AG extends Algorithm {
 			System.out.print(this.mOutput.get(i).getmName() + "	");
 		System.out.print("\n\n");
 	}
-	
+
 	public void timeCalculations() {
 		for (int i = 0; i < this.mProcesses.size(); i++) {
-			this.mProcesses.get(i).setmTurnAroundTime(this.mProcesses.get(i).getmCompletionTime() - this.mProcesses.get(i).getmArrivalTime());
-			this.mProcesses.get(i).setmWaitingTime(this.mProcesses.get(i).getmTurnAroundTime() - this.mProcesses.get(i).getmBurstTime());		
+			this.mProcesses.get(i).setmTurnAroundTime(
+					this.mProcesses.get(i).getmCompletionTime() - this.mProcesses.get(i).getmArrivalTime());
+			this.mProcesses.get(i).setmWaitingTime(
+					this.mProcesses.get(i).getmTurnAroundTime() - this.mProcesses.get(i).getmBurstTime());
 			this.mTotalTurnAround += this.mProcesses.get(i).getmTurnAroundTime();
 			this.mTotalWaitingTime += this.mProcesses.get(i).getmWaitingTime();
 		}
 	}
-	
+
 	public void printTable() {
 		timeCalculations();
-		System.out.println("\n\nProcess \t Arrival Time \t Burst Time \t Priority \t Waiting Time \t Turn Around Time \t AG-Factor \n");
+		System.out.println(
+				"\n\nProcess \t Arrival Time \t Burst Time \t Priority \t Waiting Time \t Turn Around Time \t AG-Factor \n");
 		for (int i = 0; i < this.mProcesses.size(); i++) {
 			System.out.print("\n   " + this.mProcesses.get(i).getmName() + "\t\t   "
 					+ this.mProcesses.get(i).getmArrivalTime() + "\t	    " + this.mProcesses.get(i).getmBurstTime()
 					+ "\t           " + this.mProcesses.get(i).getmPriority() + "\t\t    "
-					+ this.mProcesses.get(i).getmWaitingTime() + "\t\t      " + this.mProcesses.get(i).getmTurnAroundTime()
-					+ "\t\t    " + this.mProcesses.get(i).getmAGFactor() + "\n");
+					+ this.mProcesses.get(i).getmWaitingTime() + "\t\t      "
+					+ this.mProcesses.get(i).getmTurnAroundTime() + "\t\t    " + this.mProcesses.get(i).getmAGFactor()
+					+ "\n");
 		}
 		System.out.print("\n\n");
 		System.out.println("[Some Statistics]");
-		System.out.println("* Average turn around time = " +this.mTotalTurnAround/this.mNumOfProcesses+ ".");
-		System.out.println("* Average waiting time = " +this.mTotalWaitingTime/this.mNumOfProcesses+ ".");
+		System.out.println("* Average turn around time = " + this.mTotalTurnAround / this.mNumOfProcesses + ".");
+		System.out.println("* Average waiting time = " + this.mTotalWaitingTime / this.mNumOfProcesses + ".");
 		System.out.print("\n\n");
 	}
-	
+
 	public void startSimulation() {
+		this.mTimeLine.add(-1);
+		Process nop = new Process();
+		this.mOutput.add(nop);
 		SwingUtilities.invokeLater(() -> {
 			OutputForm example = new OutputForm(this.mProcesses, this.mOutput, this.mTimeLine);
 			example.setSize(800, 400);
@@ -165,7 +170,7 @@ public class AG extends Algorithm {
 		boolean included = false;
 		int lastProcess = 0; /// Store the last process info to prevent duplication
 		for (int time = 0; time <= this.mMaxTime;) {
-			if(included)
+			if (included)
 				this.mTimeLine.add(time);
 			included = true;
 			/// Sorting the remaining processes according to their AG-Factor.
@@ -386,9 +391,9 @@ public class AG extends Algorithm {
 				}
 
 			} else if (this.mTemp.size() == 1 && this.readyQueue.size() == 0) {
+				this.mTimeLine.add(time);
 				System.out.println("Process " + this.mTemp.get(0).getmName() + " running.");
 				time += this.mTemp.get(0).getmQuantum();
-
 
 				this.mTemp.get(0).setmRemainingTime(this.mTemp.get(0).getmRemainingTime() - Math
 						.min((int) Math.ceil(this.mTemp.get(0).getmQuantum()), this.mTemp.get(0).getmRemainingTime()));
@@ -413,6 +418,7 @@ public class AG extends Algorithm {
 							break;
 						}
 					}
+					included = false;
 				}
 
 			} else {
