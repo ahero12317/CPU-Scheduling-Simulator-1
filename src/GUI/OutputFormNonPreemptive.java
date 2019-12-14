@@ -53,7 +53,7 @@ public class OutputFormNonPreemptive extends JFrame {
 	private GanttCategoryDataset getCategoryDataset() {
 		TaskSeriesCollection dataset = new TaskSeriesCollection();
 		for (int i = 0; i < this.mProcesses.size(); i++) {
-			TaskSeries series1 = new TaskSeries("P" + (i + 1));
+			TaskSeries series1 = new TaskSeries( (mOrder.get(i).getmName()));
 			Task t1 = new Task(" ", new SimpleTimePeriod(this.mTimeline.get(2*i), this.mTimeline.get(2*i+1)));
 			ArrayList<Task> temp = new ArrayList<>();
 			temp.clear();
