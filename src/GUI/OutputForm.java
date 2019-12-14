@@ -54,8 +54,8 @@ public class OutputForm extends JFrame {
 	private GanttCategoryDataset getCategoryDataset() {
 		TaskSeriesCollection dataset = new TaskSeriesCollection();
 		for (int i = 0; i < this.mProcesses.size(); i++) {
-			TaskSeries series1 = new TaskSeries("P" + (i + 1));
-			Task t1 = new Task(" ", new SimpleTimePeriod(0, 100));
+			TaskSeries series1 = new TaskSeries("P" + (i + 1)); 
+			Task t1 = new Task(" ", new SimpleTimePeriod(this.mTimeline.get(2 * i), this.mTimeline.get(2 * i + 1)));
 			ArrayList<Task> temp = new ArrayList<>();
 			temp.clear();
 			for (int j = 0; j < this.mOrder.size() - 1; j++) {
