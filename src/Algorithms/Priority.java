@@ -1,6 +1,18 @@
 package Algorithms;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+import GUI.OutputFormNonPreemptive;
 import Processes.Process;
-import java.util.*;
+
+
+
 
 public class Priority extends Algorithm {
 	int n;
@@ -10,6 +22,9 @@ public class Priority extends Algorithm {
 	int prio;
 	int Initial_time=0;
 	int Completed_time;
+	ArrayList<Process> result=new ArrayList<Process>();
+	ArrayList<Process> mProcesses=new ArrayList<Process>();
+	ArrayList<Integer> mTimeLine=new ArrayList<Integer>();
 	
 	Scanner sc=new Scanner(System.in);
 	Scanner sc1=new Scanner(System.in);
@@ -29,10 +44,24 @@ class Mycomparator implements Comparator<Object>
 	}
 	
 }
+TreeSet<Process> queue=new TreeSet<Process>(new Mycomparator());
+
+public void startSimulation() {
+	SwingUtilities.invokeLater(() -> {
+		OutputFormNonPreemptive example = new OutputFormNonPreemptive(this.mProcesses, this.result, this.mTimeLine);
+		example.setSize(800, 400);
+		example.setLocationRelativeTo(null);
+		example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		example.setVisible(true);
+	});
+	
+	
+}
+
 
 	@Override
-	public void Simulate() {
-		TreeSet<Process> queue=new TreeSet<Process>(new Mycomparator());
+    public void Simulate() {
+		
 		System.out.println("enter no. of processes");
 		n=sc.nextInt();
 		for(int i=0;i<n;i++)
@@ -47,25 +76,30 @@ class Mycomparator implements Comparator<Object>
 			p.setmArrivalTime(Atime);
 			p.setmBurstTime(Btime);
 			p.setmPriority(prio);
-			queue.add(p);	
+			queue.add(p);
+			mProcesses.add(p);
 		}
 		
-		ArrayList<Process> result=new ArrayList<Process>();
 		Iterator<Process> it = queue.iterator();
 		Initial_time = ((Process)queue.first()).getmArrivalTime();
+		
 		while(it.hasNext())
 		{
 			Process p1 = (Process)it.next();
+			this.mTimeLine.add(Initial_time);
 			Initial_time+=p1.getmBurstTime();
 			Completed_time=Initial_time;
+			this.mTimeLine.add(Completed_time);
 			p1.setmTurnAroundTime(Completed_time-p1.getmArrivalTime());
 			p1.setmWaitingTime(p1.getmTurnAroundTime()-p1.getmBurstTime());
 			if(p1.getmWaitingTime()>=10){
 				p1.setmPriority(p1.getmPriority()-1);
 			}
+			
 			result.add(p1);
 			
 		}
+		
 		int sumWT=0;
 		int sumTAT=0;
 		int avgWT=0;
@@ -82,5 +116,9 @@ class Mycomparator implements Comparator<Object>
 		avgTAT=sumTAT/n;
 		System.out.print("average waiting time: " + avgWT + "\n");
 		System.out.print("average turn around time: " + avgTAT + "\n");
+		startSimulation();
+	
+	
+		
 	}
 }
