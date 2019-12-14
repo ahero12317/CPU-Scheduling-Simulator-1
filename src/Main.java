@@ -1,3 +1,11 @@
+/* Repository link: https://github.com/BouSenna/CPU-Scheduling-Simulator
+ * Authors: Sara Abou-Senna,		20175006
+ * 			Ahmed Abou Al-Fottouh, 	20175024
+ * 			Menna Mohamed Rady,		20175017
+ * 			Mariam Mohamed,			20175016		
+ * 			Ali Mohamed Samy,		20175023
+ * */
+
 import java.util.Scanner;
 import Algorithms.AG;
 import Algorithms.Priority;
