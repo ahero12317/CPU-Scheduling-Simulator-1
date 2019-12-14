@@ -136,10 +136,11 @@ public class SRTF extends Algorithm {
 		System.out.println("average wait time = " + avgwt / noOfProcesses + "  average turn around time = "
 				+ avgta / noOfProcesses);
 
-		for (int i = 0; i < timeline.size(); i++)
-			System.out.println(timeline.get(i) + "  ");
-		for (int i = 0; i < output.size(); i++)
-			System.out.println(output.get(i).getmName() + "  ");
+		/*
+		 * for (int i = 0; i < timeline.size(); i++) System.out.println(timeline.get(i)
+		 * + "  "); for (int i = 0; i < output.size(); i++)
+		 * System.out.println(output.get(i).getmName() + "  ");
+		 */
 
 		startSimulation();
 	}
