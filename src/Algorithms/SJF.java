@@ -1,5 +1,8 @@
 package Algorithms;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import GUI.OutputFormNonPreemptive;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -15,8 +18,19 @@ public class SJF extends Algorithm {
     float avgWait_time=0;
     float avgTurnAround_time=0;
     ArrayList<Process> list = new ArrayList<Process>();
+    ArrayList<Process> answer_list = new ArrayList<Process>();
+    ArrayList<Integer> time_list = new ArrayList<Integer>();
 	Scanner sc = new Scanner(System.in);
 	Scanner nameSc = new Scanner(System.in);
+	public void startSimulation() {
+		SwingUtilities.invokeLater(() -> {
+			OutputFormNonPreemptive example = new OutputFormNonPreemptive(this.list, this.answer_list, this.time_list);
+			example.setSize(800, 400);
+			example.setLocationRelativeTo(null);
+			example.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			example.setVisible(true);
+		});
+		}
 	@Override
     public void Simulate() {
     	System.out.println("Enter number of processes:");
@@ -32,7 +46,8 @@ public class SJF extends Algorithm {
 			P.setmBurstTime(burst_time);
 			P.setmName(process_name);
 			P.setmWaitingTime(waiting_time);
-
+            
+			
 			list.add(P);
 		}
 		int completed[]=new int [n];
@@ -57,13 +72,16 @@ public class SJF extends Algorithm {
 	    		system_time++;
 	    	else 
 	    	{
+	    		time_list.add(system_time);
 	    		int a=(system_time)+(list.get(x).getmBurstTime());
+	    		time_list.add(a);
 	    		list.get(x).setmCompletionTime(a);
 	    		system_time+=list.get(x).getmBurstTime();
 	    		list.get(x).setmTurnAroundTime(list.get(x).getmCompletionTime() - list.get(x).getmArrivalTime());
 	    		list.get(x).setmWaitingTime(list.get(x).getmTurnAroundTime() - list.get(x).getmBurstTime());
 	    		completed[x]=1;
 	    		NCompleted_process++;
+	    		answer_list.add(list.get(x));
 	    	}
 	    }
 	    System.out.println("\nprocessName  arrival_time  brust_time  complete_time turnAround_time waiting_time");
@@ -71,13 +89,12 @@ public class SJF extends Algorithm {
 	    {
 	    	avgWait_time+=list.get(i).getmWaitingTime();
     		avgTurnAround_time+=list.get(i).getmWaitingTime();
-    		System.out.println(list.get(i).getmName() + "           " + list.get(i).getmArrivalTime() + "       "
-					+ list.get(i).getmBurstTime() + "        " + list.get(i).getmCompletionTime() + "           "
-					+ list.get(i).getmTurnAroundTime() + "           " + list.get(i).getmWaitingTime());	    
+    		System.out.println("    "+list.get(i).getmName() + "             " + list.get(i).getmArrivalTime() + "            "
+					+ list.get(i).getmBurstTime() + "             " + list.get(i).getmCompletionTime() + "             "
+					+ list.get(i).getmTurnAroundTime() + "               " + list.get(i).getmWaitingTime());	    
 	    }
     	System.out.println("\n average waiting time : "+(float)(avgWait_time/n));
 	    System.out.println("\n average turn time : "+(float)(avgTurnAround_time/n));
-	    sc.close();
-	    nameSc.close();
+	    startSimulation();
     }
 }
